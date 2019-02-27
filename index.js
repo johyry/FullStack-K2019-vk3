@@ -1,11 +1,12 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const app = express();
 var morgan = require("morgan");
 const cors = require('cors')
 
 app.use(cors())
 app.use(morgan('tiny'));
+app.use(express.static('build'))
+
 
 let persons = [
   {
