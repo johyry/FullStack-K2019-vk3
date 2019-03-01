@@ -1,0 +1,6 @@
+PUT http://localhost:3001/api/persons/5c79285b4ac26b061ca0ba99
+
+{
+    "name": "PUT-TEST-LOL",
+    "number": "TESTESTTEST"
+}
