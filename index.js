@@ -1,4 +1,7 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -60,7 +63,7 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
   const body = request.body;
   console.log("whats goin on?? app.post is here")
  
@@ -68,12 +71,16 @@ app.post("/api/persons", (request, response) => {
     name: body.name,
     number: body.number,
     //important: body.important || false,
-    //date: new Date()
+    date: new Date()
   });
 
-  person.save().then(savedPerson => {
-    response.json(savedPerson.toJSON())
-  })
+  person
+    .save()
+    .then(savedPerson => savedPerson.toJSON())
+    .then(savedAndFormattedPerson => {
+      response.json(savedAndFormattedPerson)
+    })
+  
   .catch(error => next(error))
   /*persons = persons.concat(person);
 
@@ -122,7 +129,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError' && error.kind == 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
 
   next(error)
 }

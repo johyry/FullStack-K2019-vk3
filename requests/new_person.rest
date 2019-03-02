@@ -2,6 +2,6 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "name": "REST-TEST-LOL",
-    "number": "430420410"
+    "name": "RESTaasdsd-TEST-LOL",
+    "number": "430420ads410"
 }
